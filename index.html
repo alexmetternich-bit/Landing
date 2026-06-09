@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LevelOp — Technological Agency</title>
+  <meta name="description" content="LevelOp helps organizations create technological agency through AI, data, sustainability systems, and custom tools for the transition economy." />
+  <style>
+    :root {
+      --bg: #030712;
+      --text: #f1f7ff;
+      --muted: #9fb2c7;
+      --cyan: #58f6ff;
+      --blue: #7187ff;
+      --green: #7dffb2;
+      --gold: #ffc96b;
+      --line: rgba(88, 246, 255, .22);
+      --panel: rgba(8, 18, 33, .72);
+      --panel2: rgba(13, 28, 49, .82);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(88,246,255,.14), transparent 30rem),
+        radial-gradient(circle at 82% 4%, rgba(113,135,255,.16), transparent 34rem),
+        radial-gradient(circle at 48% 92%, rgba(125,255,178,.1), transparent 36rem),
+        #030712;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(88,246,255,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(88,246,255,.045) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: linear-gradient(to bottom, black, transparent 88%);
+      opacity: .55;
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px, transparent 1px, transparent 8px);
+      opacity: .16;
+      z-index: -1;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .header {
+      position: sticky;
+      top: 14px;
+      z-index: 20;
+      margin-top: 14px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 999px;
+      background: rgba(3, 7, 18, .68);
+      backdrop-filter: blur(18px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 0 60px rgba(88,246,255,.12);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 850;
+      letter-spacing: -.04em;
+      font-size: 1.12rem;
+    }
+
+    .mark {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--cyan);
+      box-shadow: inset 0 0 24px rgba(88,246,255,.16), 0 0 20px rgba(88,246,255,.16);
+      font-size: .74rem;
+      letter-spacing: .12em;
+    }
+
+    .brand em { color: var(--cyan); font-style: normal; }
+
+    .nav {
+      display: flex;
+      gap: 22px;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .nav a:hover { color: var(--cyan); }
+
+    .cta-small {
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: #06111d;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      font-weight: 800;
+      font-size: .9rem;
+    }
+
+    .hero {
+      min-height: 86vh;
+      display: grid;
+      grid-template-columns: 1fr .85fr;
+      gap: 60px;
+      align-items: center;
+      padding: 86px 0 72px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: .74rem;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,.09);
+      background: rgba(88,246,255,.055);
+      padding: 9px 13px;
+      border-radius: 999px;
+    }
+
+    .signal {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 18px var(--green);
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      margin: 26px 0 22px;
+      font-size: clamp(3.6rem, 10vw, 8.8rem);
+      line-height: .84;
+      letter-spacing: -.09em;
+      max-width: 920px;
+    }
+
+    .outline {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(88,246,255,.82);
+      text-shadow: 0 0 30px rgba(88,246,255,.18);
+    }
+
+    .lead {
+      color: var(--muted);
+      font-size: clamp(1.08rem, 2vw, 1.3rem);
+      line-height: 1.65;
+      max-width: 720px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 34px;
+    }
+
+    .button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-weight: 850;
+      transition: transform .2s ease, box-shadow .2s ease;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+
+    .primary {
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      color: #04101d;
+      box-shadow: 0 0 34px rgba(88,246,255,.28);
+    }
+
+    .secondary {
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.045);
+      color: var(--text);
+    }
+
+    .mission-orb {
+      position: relative;
+      min-height: 560px;
+      border: 1px solid var(--line);
+      border-radius: 42px;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(88,246,255,.16), transparent 21rem),
+        radial-gradient(circle at 50% 70%, rgba(125,255,178,.12), transparent 20rem),
+        linear-gradient(135deg, rgba(88,246,255,.08), rgba(113,135,255,.055)),
+        rgba(3,7,18,.68);
+      overflow: hidden;
+      box-shadow: 0 0 80px rgba(88,246,255,.18), inset 0 0 80px rgba(88,246,255,.07);
+    }
+
+    .mission-orb::before {
+      content: "";
+      position: absolute;
+      inset: 8%;
+      border-radius: 50%;
+      border: 1px solid rgba(88,246,255,.22);
+      box-shadow: inset 0 0 50px rgba(88,246,255,.06), 0 0 40px rgba(88,246,255,.08);
+    }
+
+    .mission-orb::after {
+      content: "";
+      position: absolute;
+      inset: 19%;
+      border-radius: 50%;
+      border: 1px dashed rgba(125,255,178,.35);
+      animation: rotate 28s linear infinite;
+    }
+
+    @keyframes rotate { to { transform: rotate(360deg); } }
+
+    .axis {
+      position: absolute;
+      inset: 50% 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--line), transparent);
+    }
+
+    .axis.b { transform: rotate(90deg); }
+    .axis.c { transform: rotate(45deg); }
+    .axis.d { transform: rotate(-45deg); }
+
+    .orbit-label {
+      position: absolute;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px;
+      background: rgba(8,18,33,.72);
+      backdrop-filter: blur(16px);
+      color: var(--text);
+      font-size: .82rem;
+      box-shadow: 0 0 24px rgba(88,246,255,.12);
+    }
+
+    .l1 { top: 16%; left: 10%; }
+    .l2 { top: 14%; right: 10%; }
+    .l3 { bottom: 18%; left: 11%; }
+    .l4 { bottom: 14%; right: 11%; }
+    .l5 {
+      left: 50%;
+      bottom: 7%;
+      transform: translateX(-50%);
+      border-color: rgba(125,255,178,.38);
+      color: var(--green);
+      box-shadow: 0 0 24px rgba(125,255,178,.15);
+    }
+
+    .core {
+      position: absolute;
+      inset: 50%;
+      transform: translate(-50%, -50%);
+      width: 156px;
+      height: 156px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      font-weight: 900;
+      letter-spacing: .08em;
+      font-size: .78rem;
+      background: rgba(3,7,18,.72);
+      box-shadow: 0 0 50px rgba(88,246,255,.32), inset 0 0 34px rgba(88,246,255,.12);
+    }
+
+    .ticker {
+      border-block: 1px solid var(--line);
+      background: rgba(88,246,255,.04);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .ticker div {
+      display: inline-block;
+      padding: 15px 0;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: .76rem;
+      animation: ticker 34s linear infinite;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    section { padding: 92px 0; }
+
+    .section-head {
+      max-width: 860px;
+      margin-bottom: 34px;
+    }
+
+    .kicker {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: .76rem;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      font-size: clamp(2.2rem, 5vw, 5.4rem);
+      line-height: .92;
+      letter-spacing: -.075em;
+      margin-bottom: 18px;
+    }
+
+    .muted {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1.08rem;
+    }
+
+    .three {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      border: 1px solid rgba(255,255,255,.1);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 28px;
+      min-height: 330px;
+      box-shadow: 0 0 50px rgba(88,246,255,.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(88,246,255,.12), transparent 16rem);
+      pointer-events: none;
+    }
+
+    .num {
+      color: var(--cyan);
+      letter-spacing: .16em;
+      font-weight: 900;
+      font-size: .78rem;
+    }
+
+    .card h3 {
+      margin-top: 70px;
+      font-size: 1.38rem;
+      letter-spacing: -.03em;
+    }
+
+    .card p, .card li {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    ul {
+      margin: 16px 0 0;
+      padding-left: 1.2rem;
+    }
+
+    li { margin: 8px 0; }
+
+    li::marker {
+      color: var(--cyan);
+    }
+
+    .wide-panel {
+      border: 1px solid rgba(255,255,255,.1);
+      background: linear-gradient(135deg, rgba(88,246,255,.07), transparent), var(--panel2);
+      border-radius: 36px;
+      padding: 38px;
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 40px;
+      box-shadow: 0 0 70px rgba(88,246,255,.1);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      background: rgba(3,7,18,.42);
+      border-radius: 20px;
+      padding: 18px;
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 18px;
+    }
+
+    .step strong {
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: .13em;
+      font-size: .76rem;
+    }
+
+    .step span {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .transition {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      overflow: hidden;
+      background: var(--line);
+    }
+
+    .era {
+      background: rgba(8,18,33,.82);
+      padding: 30px;
+      min-height: 330px;
+    }
+
+    .era small {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      font-weight: 900;
+    }
+
+    .era h3 {
+      font-size: 1.5rem;
+      margin: 58px 0 12px;
+    }
+
+    .era p, .era li {
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .flourish {
+      border: 1px solid rgba(125,255,178,.28);
+      border-radius: 36px;
+      padding: 38px;
+      background:
+        radial-gradient(circle at top right, rgba(125,255,178,.15), transparent 24rem),
+        rgba(8,18,33,.78);
+      box-shadow: 0 0 70px rgba(125,255,178,.08);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      margin-top: 28px;
+    }
+
+    .flourish h3 {
+      font-size: clamp(1.8rem, 3vw, 3.2rem);
+      line-height: 1;
+      letter-spacing: -.05em;
+      margin-bottom: 16px;
+    }
+
+    .flourish strong {
+      color: var(--green);
+    }
+
+    .quote {
+      padding: 40px 0 110px;
+      text-align: center;
+    }
+
+    .quote p {
+      font-size: clamp(2.5rem, 6vw, 6.4rem);
+      line-height: .9;
+      letter-spacing: -.08em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(241,247,255,.72);
+      text-shadow: 0 0 34px rgba(88,246,255,.16);
+      max-width: 1050px;
+      margin: auto;
+    }
+
+    .contact { padding-top: 0; }
+
+    .contact-box {
+      border: 1px solid var(--line);
+      border-radius: 40px;
+      background: radial-gradient(circle at top left, rgba(88,246,255,.12), transparent 26rem), rgba(8,18,33,.82);
+      padding: 42px;
+      display: grid;
+      grid-template-columns: 1fr .9fr;
+      gap: 40px;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+    }
+
+    label {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(3,7,18,.66);
+      border-radius: 16px;
+      padding: 14px 15px;
+      color: var(--text);
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(88,246,255,.1);
+    }
+
+    footer {
+      color: var(--muted);
+      text-align: center;
+      padding: 28px 0 40px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    @media (max-width: 900px) {
+      .nav, .cta-small { display: none; }
+      .hero, .wide-panel, .contact-box, .flourish { grid-template-columns: 1fr; }
+      .hero { padding-top: 58px; }
+      .mission-orb { min-height: 460px; }
+      .three, .transition { grid-template-columns: 1fr; }
+      section { padding: 64px 0; }
+      .step { grid-template-columns: 1fr; }
+      .quote { padding-bottom: 70px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header shell">
+    <a class="brand" href="#">
+      <span class="mark">LO</span>
+      <span>Level<em>Op</em></span>
+    </a>
+    <nav class="nav">
+      <a href="#agency">Agency</a>
+      <a href="#transition">Transition</a>
+      <a href="#flourishing">Flourishing</a>
+      <a href="#tools">Build Tools</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="cta-small" href="#contact">Start</a>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div>
+        <div class="eyebrow"><span class="signal"></span> Mission systems for a flourishing transition</div>
+        <h1>
+          Technological
+          <span class="outline">Agency</span>
+        </h1>
+        <p class="lead">
+          LevelOp helps organizations transform their own expertise into AI-powered tools,
+          sustainability intelligence, data systems, and adaptive capabilities for the transition economy.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#contact">Create your capability</a>
+          <a class="button secondary" href="#agency">Explore the mission</a>
+        </div>
+      </div>
+
+      <aside class="mission-orb" aria-label="Mission control interface graphic">
+        <div class="axis"></div>
+        <div class="axis b"></div>
+        <div class="axis c"></div>
+        <div class="axis d"></div>
+        <div class="core">LEVEL<br>OP</div>
+        <div class="orbit-label l1">People</div>
+        <div class="orbit-label l2">Data</div>
+        <div class="orbit-label l3">AI</div>
+        <div class="orbit-label l4">Systems</div>
+        <div class="orbit-label l5">Environment</div>
+      </aside>
+    </section>
+
+    <div class="ticker">
+      <div>
+        Technological agency · Sustainability intelligence · Flourishing organizations · AI systems · Data agglomeration · ESG capability · Environmental transition · Bottom-up tool design ·
+        Technological agency · Sustainability intelligence · Flourishing organizations · AI systems · Data agglomeration · ESG capability · Environmental transition · Bottom-up tool design ·
+      </div>
+    </div>
+
+    <section id="agency" class="shell">
+      <div class="section-head">
+        <p class="kicker">01 / Core concept</p>
+        <h2>Most organizations consume technology. The resilient ones learn to shape it.</h2>
+        <p class="muted">
+          We help organizations move from passive software adoption to active technological capability.
+          The goal is not only operational efficiency, but the freedom to define, build, adapt, and evolve tools around your mission.
+        </p>
+      </div>
+
+      <div class="three">
+        <article class="card">
+          <span class="num">01</span>
+          <h3>Agency over dependency</h3>
+          <ul>
+            <li>Reduce reliance on rigid vendor platforms.</li>
+            <li>Build systems your organization understands.</li>
+            <li>Create tools that can evolve with your work.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="num">02</span>
+          <h3>Expertise becomes infrastructure</h3>
+          <ul>
+            <li>Turn domain knowledge into system design.</li>
+            <li>Use real workflows as the blueprint.</li>
+            <li>Make institutional knowledge operational.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="num">03</span>
+          <h3>Accessible intelligence</h3>
+          <ul>
+            <li>Make AI and data tools usable by non-technical teams.</li>
+            <li>Design for clarity, trust, and adoption.</li>
+            <li>Keep people in control of the system.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="transition" class="shell">
+      <div class="section-head">
+        <p class="kicker">02 / The transition economy</p>
+        <h2>New pressures require new organizational capabilities.</h2>
+        <p class="muted">
+          Climate change, AI, regulation, fragmented data, environmental reporting, and institutional complexity are changing how organizations operate.
+          LevelOp builds the connective systems that help teams navigate the transition and flourish within it.
+        </p>
+      </div>
+
+      <div class="transition">
+        <article class="era">
+          <small>Past</small>
+          <h3>Industrial systems</h3>
+          <ul>
+            <li>Fixed processes</li>
+            <li>Linear reporting</li>
+            <li>Slow technology cycles</li>
+          </ul>
+        </article>
+        <article class="era">
+          <small>Present</small>
+          <h3>Information overload</h3>
+          <ul>
+            <li>Data scattered across platforms</li>
+            <li>Sustainability requirements rising</li>
+            <li>Teams lacking usable intelligence</li>
+          </ul>
+        </article>
+        <article class="era">
+          <small>Next</small>
+          <h3>Adaptive flourishing</h3>
+          <ul>
+            <li>AI-enabled decision systems</li>
+            <li>Environmental intelligence</li>
+            <li>Tools that grow with the mission</li>
+          </ul>
+        </article>
+      </div>
+
+      <div id="flourishing" class="flourish">
+        <div>
+          <p class="kicker">Sustainability / Flourishing</p>
+          <h3>Transition is not only about surviving change. It is about learning how to <strong>flourish</strong>.</h3>
+        </div>
+        <div>
+          <p class="muted">
+            Sustainability is not a side category for LevelOp. It is part of the operating context of the new economy.
+            Organizations need tools that help them understand their environmental impact, model better futures, and make decisions that support long-term resilience.
+          </p>
+          <ul>
+            <li>CO₂ tracking and emissions intelligence</li>
+            <li>ESG reporting workflows</li>
+            <li>Scenario development for reduction pathways</li>
+            <li>Environmental data made usable for decision-making</li>
+            <li>Systems that connect operational performance with planetary responsibility</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="tools" class="shell">
+      <div class="wide-panel">
+        <div>
+          <p class="kicker">03 / Build your own tools</p>
+          <h2>Your workflows become the blueprint.</h2>
+          <p class="muted">
+            We do not force your organization into generic software logic.
+            We guide your team in using emerging technologies to design tools around the work you already understand best.
+          </p>
+        </div>
+
+        <div class="timeline">
+          <div class="step">
+            <strong>Map</strong>
+            <span>Workflows, data sources, institutional knowledge, environmental context, pain points, and opportunities.</span>
+          </div>
+          <div class="step">
+            <strong>Translate</strong>
+            <span>Domain expertise becomes tool concepts, system architecture, and usable interfaces.</span>
+          </div>
+          <div class="step">
+            <strong>Build</strong>
+            <span>AI-enabled software, dashboards, automations, reporting systems, and sustainability data infrastructure.</span>
+          </div>
+          <div class="step">
+            <strong>Transfer</strong>
+            <span>Your team learns to operate, understand, and continue evolving the tools over time.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote shell">
+      <p>Not just better tools. The ability to build better futures.</p>
+    </section>
+
+    <section id="contact" class="contact shell">
+      <div class="contact-box">
+        <div>
+          <p class="kicker">Begin the next system</p>
+          <h2>Ready to create technological agency?</h2>
+          <p class="muted">
+            Tell us what your organization is trying to understand, automate, report, model, reduce, or make possible.
+          </p>
+        </div>
+
+        <form action="mailto:hello@levelop.example" method="post" enctype="text/plain">
+          <label>
+            Name
+            <input type="text" name="name" placeholder="Your name" />
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" placeholder="you@organization.org" />
+          </label>
+          <label>
+            Mission
+            <textarea name="message" rows="5" placeholder="What capability do you want to create?"></textarea>
+          </label>
+          <button class="button primary" type="submit">Transmit inquiry</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> LevelOp · Technological agency for a flourishing transition economy
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
